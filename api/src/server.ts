@@ -1,4 +1,6 @@
 import { fastifyCors } from '@fastify/cors'
+import { fastifySwagger } from '@fastify/swagger'
+import scalarApiReference from '@scalar/fastify-api-reference'
 import { fastify } from 'fastify'
 import {
   type ZodTypeProvider,
@@ -15,6 +17,23 @@ app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
 app.setErrorHandler(errorHandler)
+
+app.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: 'Tasks Plus API',
+      description: 'API documentation for the Tasks Plus application',
+      version: '1.0.0',
+    },
+  },
+})
+
+app.register(scalarApiReference, {
+  routePrefix: '/docs',
+  configuration: {
+    theme: 'kepler',
+  },
+})
 
 app.register(fastifyCors, {
   origin: true,
