@@ -1,0 +1,10 @@
+services:
+  database:
+    image: bitnami/postgresql:latest
+    container_name: tasks_plus_db
+    environment:
+      POSTGRESQL_USERNAME: root
+      POSTGRESQL_PASSWORD: tasks
+      POSTGRESQL_DATABASE: tasks
+    ports:
+      - '5432:5432'
