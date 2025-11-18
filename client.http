@@ -1,4 +1,5 @@
 @baseURl = http://localhost:3333
+@token = {{sign_in.response.body.token}}
 
 # Sign up
 POST {{baseURl}}/sign-up
@@ -6,6 +7,19 @@ Content-Type: application/json
 
 {
   "username": "John Doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "confirmPassword": "password123"
+}
+
+###
+
+# Sign in
+# @name sign_in
+POST {{baseURl}}/sign-in
+Content-Type: application/json
+
+{
   "email": "john@example.com",
   "password": "password123",
   "confirmPassword": "password123"
