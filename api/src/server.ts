@@ -10,8 +10,8 @@ import {
 } from 'fastify-type-provider-zod'
 import { env } from './config/env'
 import { errorHandler } from './error-handler'
-import { signIn } from './routes/sign-in'
-import { signUp } from './routes/sign-up'
+import { signIn } from './routes/auth/sign-in'
+import { signUp } from './routes/auth/sign-up'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 

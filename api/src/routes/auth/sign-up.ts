@@ -2,9 +2,9 @@ import { hash } from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { db } from '../database/index'
-import { usersTable } from '../database/schemas'
-import { ConflictError } from './_errors/conflict-error'
+import { db } from '../../database/index'
+import { usersTable } from '../../database/schemas'
+import { ConflictError } from '../_errors/conflict-error'
 
 export const signUp: FastifyPluginAsyncZod = async (app) => {
   app.post(

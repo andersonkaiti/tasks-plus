@@ -2,9 +2,9 @@ import { compare } from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { db } from '../database'
-import { usersTable } from '../database/schemas'
-import { UnauthorizedError } from './_errors/unauthorized-error'
+import { db } from '../../database'
+import { usersTable } from '../../database/schemas'
+import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export const signIn: FastifyPluginAsyncZod = async (app) => {
   app.post(
