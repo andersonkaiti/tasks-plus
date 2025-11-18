@@ -1,0 +1,10 @@
+{
+  "name": "tasks-plus",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "packageManager": "pnpm@10.18.2"
+}
