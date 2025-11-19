@@ -13,19 +13,10 @@ export const signIn: FastifyPluginAsyncZod = async (app) => {
       schema: {
         summary: 'Sign in',
         tags: ['Authentication'],
-        body: z
-          .object({
-            email: z.email(),
-            password: z.string(),
-            confirmPassword: z.string(),
-          })
-          .refine(
-            ({ password, confirmPassword }) => password === confirmPassword,
-            {
-              message: "Passwords don't match",
-              path: ['password_confirmation'],
-            },
-          ),
+        body: z.object({
+          email: z.email(),
+          password: z.string(),
+        }),
         response: {
           200: z.object({
             token: z.string(),
