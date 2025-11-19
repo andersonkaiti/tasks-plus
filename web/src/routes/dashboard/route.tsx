@@ -33,7 +33,7 @@ function RouteComponent() {
           <Outlet />
         </SidebarInset>
 
-        <div className="fixed top-6 right-6">
+        <div className="fixed top-3 right-3">
           <AnimatedThemeToggler className="size-5 cursor-pointer" />
         </div>
       </SidebarProvider>

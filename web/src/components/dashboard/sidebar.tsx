@@ -64,7 +64,7 @@ export function DashboardSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link to="/dashboard">Tarefas</Link>
+                  <Link to="/dashboard/tasks">Tarefas</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

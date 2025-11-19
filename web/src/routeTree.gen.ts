@@ -14,6 +14,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
+import { Route as DashboardTasksIndexRouteImport } from './routes/dashboard/tasks/index'
+import { Route as DashboardTasksCreateIndexRouteImport } from './routes/dashboard/tasks/create/index'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -40,6 +42,17 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/auth/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardTasksIndexRoute = DashboardTasksIndexRouteImport.update({
+  id: '/tasks/',
+  path: '/tasks/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardTasksCreateIndexRoute =
+  DashboardTasksCreateIndexRouteImport.update({
+    id: '/tasks/create/',
+    path: '/tasks/create/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,12 +60,16 @@ export interface FileRoutesByFullPath {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/tasks': typeof DashboardTasksIndexRoute
+  '/dashboard/tasks/create': typeof DashboardTasksCreateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/tasks': typeof DashboardTasksIndexRoute
+  '/dashboard/tasks/create': typeof DashboardTasksCreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,6 +78,8 @@ export interface FileRoutesById {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/tasks/': typeof DashboardTasksIndexRoute
+  '/dashboard/tasks/create/': typeof DashboardTasksCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -70,8 +89,16 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/dashboard/'
+    | '/dashboard/tasks'
+    | '/dashboard/tasks/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/sign-in' | '/auth/sign-up' | '/dashboard'
+  to:
+    | '/'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/dashboard'
+    | '/dashboard/tasks'
+    | '/dashboard/tasks/create'
   id:
     | '__root__'
     | '/'
@@ -79,6 +106,8 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/dashboard/'
+    | '/dashboard/tasks/'
+    | '/dashboard/tasks/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -125,15 +154,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/tasks/': {
+      id: '/dashboard/tasks/'
+      path: '/tasks'
+      fullPath: '/dashboard/tasks'
+      preLoaderRoute: typeof DashboardTasksIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/tasks/create/': {
+      id: '/dashboard/tasks/create/'
+      path: '/tasks/create'
+      fullPath: '/dashboard/tasks/create'
+      preLoaderRoute: typeof DashboardTasksCreateIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardTasksIndexRoute: typeof DashboardTasksIndexRoute
+  DashboardTasksCreateIndexRoute: typeof DashboardTasksCreateIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardTasksIndexRoute: DashboardTasksIndexRoute,
+  DashboardTasksCreateIndexRoute: DashboardTasksCreateIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
