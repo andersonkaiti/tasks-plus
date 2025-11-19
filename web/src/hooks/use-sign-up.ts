@@ -51,7 +51,7 @@ export function useSignUp() {
       if (err instanceof HTTPError) {
         const errorBody = await err.response.json()
 
-        setServerError(errorBody)
+        setServerError(errorBody.message)
       }
     }
   })

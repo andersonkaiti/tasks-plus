@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from '@http/auth/sign-in'
+import { useNavigate } from '@tanstack/react-router'
 import Cookies from 'js-cookie'
 import { HTTPError } from 'ky'
 import { useState } from 'react'
@@ -17,6 +18,8 @@ type SignInSchema = z.infer<typeof signInSchema>
 export function useSignIn() {
   const [serverError, setServerError] = useState<null | string>(null)
 
+  const navigate = useNavigate()
+
   const form = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema),
     values: {
@@ -32,10 +35,15 @@ export function useSignIn() {
       toast.success('Login realizado com sucesso!')
 
       Cookies.set('token', token)
+
+      navigate({
+        to: '/dashboard',
+      })
     } catch (err) {
       if (err instanceof HTTPError) {
         const errorBody = await err.response.json()
-        setServerError(errorBody)
+
+        setServerError(errorBody.message)
       }
     }
   })
