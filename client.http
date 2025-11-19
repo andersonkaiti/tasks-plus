@@ -53,3 +53,18 @@ Authorization: Bearer {{token}}
 # @name get_task
 GET {{baseURl}}/tasks/7275640c-6ee5-4a4b-b4dd-c40e0d4c276f
 Authorization: Bearer {{token}}
+
+###
+
+# Update task
+# @name update_task
+PUT {{baseURl}}/tasks/7275640c-6ee5-4a4b-b4dd-c40e0d4c276f
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "My first task updated",
+  "description": "This task was updated",
+  "completed": true,
+  "dueDate": "2024-07-10T00:00:00.000Z"
+}
