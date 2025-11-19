@@ -68,3 +68,9 @@ Authorization: Bearer {{token}}
   "completed": true,
   "dueDate": "2024-07-10T00:00:00.000Z"
 }
+
+###
+
+# Delete task
+DELETE {{baseURl}}/tasks/7275640c-6ee5-4a4b-b4dd-c40e0d4c276f
+Authorization: Bearer {{token}}

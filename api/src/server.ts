@@ -13,6 +13,7 @@ import { errorHandler } from './error-handler'
 import { signIn } from './routes/auth/sign-in'
 import { signUp } from './routes/auth/sign-up'
 import { createTask } from './routes/tasks/create-task'
+import { deleteTask } from './routes/tasks/delete-task'
 import { getTasks } from './routes/tasks/get-tasks'
 import { getTaskById } from './routes/tasks/get-tasks-by-id'
 import { updateTask } from './routes/tasks/update-task'
@@ -57,6 +58,7 @@ app.register(createTask)
 app.register(getTasks)
 app.register(getTaskById)
 app.register(updateTask)
+app.register(deleteTask)
 
 app
   .listen({
