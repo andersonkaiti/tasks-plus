@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signUp } from '@http/auth/sign-up'
+import { useNavigate } from '@tanstack/react-router'
 import { HTTPError } from 'ky'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -25,6 +26,8 @@ type SignUpSchema = z.infer<typeof signUpSchema>
 export function useSignUp() {
   const [serverError, setServerError] = useState<null | string>(null)
 
+  const navigate = useNavigate()
+
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     values: {
@@ -40,6 +43,10 @@ export function useSignUp() {
       await signUp(values)
 
       toast.success('Usuário cadastrado com sucesso!')
+
+      navigate({
+        to: '/auth/sign-in',
+      })
     } catch (err) {
       if (err instanceof HTTPError) {
         const errorBody = await err.response.json()

@@ -9,26 +9,26 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import { useSignUp } from '@hooks/use-sign-up'
+import { useSignIn } from '@hooks/use-sign-in'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { AlertCircleIcon } from 'lucide-react'
 
-export const Route = createFileRoute('/auth/sign-up')({
-  component: SignUpPage,
+export const Route = createFileRoute('/auth/sign-in')({
+  component: SignInPage,
 })
 
-function SignUpPage() {
-  const { handleSubmit, serverError, form } = useSignUp()
+function SignInPage() {
+  const { handleSubmit, serverError, form } = useSignIn()
 
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="flex flex-1 flex-col justify-center px-4 py-10 lg:px-6">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h3 className="text-center text-lg font-semibold text-foreground dark:text-foreground">
-            Crie sua conta
+            Faça login na sua conta
           </h3>
           <p className="text-center text-sm text-muted-foreground dark:text-muted-foreground">
-            Preencha os campos abaixo para se cadastrar.
+            Digite seu e-mail e senha para acessar.
           </p>
 
           <Form {...form}>
@@ -36,28 +36,12 @@ function SignUpPage() {
               {serverError && (
                 <Alert variant="destructive">
                   <AlertCircleIcon />
-                  <AlertTitle>Erro ao criar conta</AlertTitle>
+                  <AlertTitle>Erro ao fazer login</AlertTitle>
                   <AlertDescription>
                     <p>{serverError}</p>
                   </AlertDescription>
                 </Alert>
               )}
-
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-foreground dark:text-foreground">
-                      Nome de usuário
-                    </FormLabel>
-                    <FormControl>
-                      <Input type="text" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               <FormField
                 control={form.control}
@@ -68,7 +52,7 @@ function SignUpPage() {
                       E-mail
                     </FormLabel>
                     <FormControl>
-                      <Input type="email" {...field} />
+                      <Input type="email" autoComplete="email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -86,27 +70,7 @@ function SignUpPage() {
                     <FormControl>
                       <Input
                         type="password"
-                        autoComplete="new-password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-foreground dark:text-foreground">
-                      Confirme a senha
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        autoComplete="new-password"
+                        autoComplete="current-password"
                         {...field}
                       />
                     </FormControl>
@@ -116,18 +80,18 @@ function SignUpPage() {
               />
 
               <Button type="submit" className="mt-4 w-full py-2 font-medium">
-                Criar conta
+                Entrar
               </Button>
             </form>
           </Form>
 
           <p className="mt-6 text-sm text-muted-foreground dark:text-muted-foreground">
-            Já possui uma conta?{' '}
+            Não possui uma conta?{' '}
             <Link
-              to="/auth/sign-in"
+              to="/auth/sign-up"
               className="font-medium text-primary hover:text-primary/90 dark:text-primary dark:hover:text-primary/90"
             >
-              Fazer login
+              Criar conta
             </Link>
           </p>
         </div>
