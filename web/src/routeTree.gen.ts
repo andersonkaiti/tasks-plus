@@ -16,6 +16,7 @@ import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as DashboardTasksIndexRouteImport } from './routes/dashboard/tasks/index'
 import { Route as DashboardTasksCreateIndexRouteImport } from './routes/dashboard/tasks/create/index'
+import { Route as DashboardTasksUpdateIdRouteImport } from './routes/dashboard/tasks/update/$id'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -53,6 +54,11 @@ const DashboardTasksCreateIndexRoute =
     path: '/tasks/create/',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
+const DashboardTasksUpdateIdRoute = DashboardTasksUpdateIdRouteImport.update({
+  id: '/tasks/update/$id',
+  path: '/tasks/update/$id',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/tasks': typeof DashboardTasksIndexRoute
+  '/dashboard/tasks/update/$id': typeof DashboardTasksUpdateIdRoute
   '/dashboard/tasks/create': typeof DashboardTasksCreateIndexRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/tasks': typeof DashboardTasksIndexRoute
+  '/dashboard/tasks/update/$id': typeof DashboardTasksUpdateIdRoute
   '/dashboard/tasks/create': typeof DashboardTasksCreateIndexRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/auth/sign-up': typeof AuthSignUpRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/tasks/': typeof DashboardTasksIndexRoute
+  '/dashboard/tasks/update/$id': typeof DashboardTasksUpdateIdRoute
   '/dashboard/tasks/create/': typeof DashboardTasksCreateIndexRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/auth/sign-up'
     | '/dashboard/'
     | '/dashboard/tasks'
+    | '/dashboard/tasks/update/$id'
     | '/dashboard/tasks/create'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/auth/sign-up'
     | '/dashboard'
     | '/dashboard/tasks'
+    | '/dashboard/tasks/update/$id'
     | '/dashboard/tasks/create'
   id:
     | '__root__'
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/auth/sign-up'
     | '/dashboard/'
     | '/dashboard/tasks/'
+    | '/dashboard/tasks/update/$id'
     | '/dashboard/tasks/create/'
   fileRoutesById: FileRoutesById
 }
@@ -168,18 +180,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTasksCreateIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/tasks/update/$id': {
+      id: '/dashboard/tasks/update/$id'
+      path: '/tasks/update/$id'
+      fullPath: '/dashboard/tasks/update/$id'
+      preLoaderRoute: typeof DashboardTasksUpdateIdRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardTasksIndexRoute: typeof DashboardTasksIndexRoute
+  DashboardTasksUpdateIdRoute: typeof DashboardTasksUpdateIdRoute
   DashboardTasksCreateIndexRoute: typeof DashboardTasksCreateIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardTasksIndexRoute: DashboardTasksIndexRoute,
+  DashboardTasksUpdateIdRoute: DashboardTasksUpdateIdRoute,
   DashboardTasksCreateIndexRoute: DashboardTasksCreateIndexRoute,
 }
 

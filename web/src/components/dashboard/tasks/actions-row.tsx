@@ -69,7 +69,12 @@ export function ActionsRow({ id }: IActionsRowProps) {
           className="w-full justify-between flex cursor-pointer"
           asChild
         >
-          <Link to="/dashboard/tasks">
+          <Link
+            to="/dashboard/tasks/update/$id"
+            params={{
+              id,
+            }}
+          >
             Atualizar
             <Pen />
           </Link>
