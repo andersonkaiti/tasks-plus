@@ -27,6 +27,7 @@
       "@config/*": ["./src/config/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@http/*": ["./src/http/*"],
+      "@providers/*": ["./src/providers/*"],
       "@/*": ["./src/*"]
     }
   },

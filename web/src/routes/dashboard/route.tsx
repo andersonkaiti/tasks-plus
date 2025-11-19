@@ -34,7 +34,7 @@ function RouteComponent() {
         </SidebarInset>
 
         <div className="fixed top-3 right-3">
-          <AnimatedThemeToggler className="size-5 cursor-pointer" />
+          <AnimatedThemeToggler className="size-4 cursor-pointer" />
         </div>
       </SidebarProvider>
     </>

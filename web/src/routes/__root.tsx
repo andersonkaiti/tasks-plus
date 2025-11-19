@@ -1,5 +1,7 @@
 import { Toaster } from '@components/ui/sonner'
+import { QueryProvider } from '@providers/react-query'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { NuqsAdapter } from 'nuqs/adapters/react'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -8,8 +10,12 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <Outlet />
-      <Toaster />
+      <NuqsAdapter>
+        <QueryProvider>
+          <Outlet />
+          <Toaster />
+        </QueryProvider>
+      </NuqsAdapter>
     </>
   )
 }
