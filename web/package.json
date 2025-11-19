@@ -10,6 +10,9 @@
     "format": "pnpm exec biome format --write"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
     "@t3-oss/env-core": "^0.13.8",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-router": "^1.136.8",
@@ -17,8 +20,11 @@
     "clsx": "^2.1.1",
     "ky": "^1.14.0",
     "lucide-react": "^0.554.0",
+    "next-themes": "^0.4.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.66.1",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
     "zod": "^4.1.12"
@@ -26,7 +32,6 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.6",
     "@tanstack/router-plugin": "^1.136.8",
-    "@types/node": "^24.10.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
