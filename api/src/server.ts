@@ -13,6 +13,7 @@ import { errorHandler } from './error-handler'
 import { signIn } from './routes/auth/sign-in'
 import { signUp } from './routes/auth/sign-up'
 import { createTask } from './routes/tasks/create-task'
+import { getTasks } from './routes/tasks/get-tasks'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -51,6 +52,7 @@ app.register(signUp)
 app.register(signIn)
 
 app.register(createTask)
+app.register(getTasks)
 
 app
   .listen({

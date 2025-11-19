@@ -39,3 +39,11 @@ Authorization: Bearer {{token}}
   "completed": false,
   "dueDate": "2024-07-10T00:00:00.000Z"
 }
+
+###
+
+# Get tasks
+# @name get_tasks
+GET {{baseURl}}/tasks?page=1&limit=10
+Content-Type: application/json
+Authorization: Bearer {{token}}
