@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify'
 import z, { ZodError } from 'zod'
 import { ConflictError } from './routes/_errors/conflict-error'
+import { NotFoundError } from './routes/_errors/not-found'
 
 type FastifyErrorHandler = FastifyInstance['errorHandler']
 
@@ -13,7 +14,13 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
   }
 
   if (error instanceof ConflictError) {
-    return reply.status(400).send(409).send({
+    return reply.status(400).send({
+      message: error.message,
+    })
+  }
+
+  if (error instanceof NotFoundError) {
+    return reply.status(404).send({
       message: error.message,
     })
   }

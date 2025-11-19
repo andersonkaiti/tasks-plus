@@ -1,6 +1,5 @@
 @baseURl = http://localhost:3333
 @token = {{sign_in.response.body.token}}
-
 # Sign up
 POST {{baseURl}}/sign-up
 Content-Type: application/json
@@ -46,4 +45,11 @@ Authorization: Bearer {{token}}
 # @name get_tasks
 GET {{baseURl}}/tasks?page=1&limit=10
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# Get task
+# @name get_task
+GET {{baseURl}}/tasks/7275640c-6ee5-4a4b-b4dd-c40e0d4c276f
 Authorization: Bearer {{token}}

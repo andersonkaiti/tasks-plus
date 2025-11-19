@@ -14,6 +14,7 @@ import { signIn } from './routes/auth/sign-in'
 import { signUp } from './routes/auth/sign-up'
 import { createTask } from './routes/tasks/create-task'
 import { getTasks } from './routes/tasks/get-tasks'
+import { getTaskById } from './routes/tasks/get-tasks-by-id'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -53,6 +54,7 @@ app.register(signIn)
 
 app.register(createTask)
 app.register(getTasks)
+app.register(getTaskById)
 
 app
   .listen({
