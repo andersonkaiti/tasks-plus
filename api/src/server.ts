@@ -12,6 +12,7 @@ import { env } from './config/env'
 import { errorHandler } from './error-handler'
 import { signIn } from './routes/auth/sign-in'
 import { signUp } from './routes/auth/sign-up'
+import { createTask } from './routes/tasks/create-task'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -48,6 +49,8 @@ app.register(fastifySwaggerJwt, {
 
 app.register(signUp)
 app.register(signIn)
+
+app.register(createTask)
 
 app
   .listen({

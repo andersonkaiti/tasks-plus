@@ -24,3 +24,18 @@ Content-Type: application/json
   "password": "password123",
   "confirmPassword": "password123"
 }
+
+###
+
+# Create task
+# @name create_task
+POST {{baseURl}}/tasks
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "My first task",
+  "description": "This is the first task I am creating",
+  "completed": false,
+  "dueDate": "2024-07-10T00:00:00.000Z"
+}
