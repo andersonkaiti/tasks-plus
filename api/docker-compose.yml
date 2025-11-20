@@ -8,3 +8,13 @@ services:
       POSTGRESQL_DATABASE: tasks
     ports:
       - '5432:5432'
+
+  database-test:
+    image: bitnami/postgresql:latest
+    container_name: tasks_plus_db_test
+    environment:
+      POSTGRESQL_USERNAME: root
+      POSTGRESQL_PASSWORD: tasks_test
+      POSTGRESQL_DATABASE: tasks_test
+    ports:
+      - '5433:5432'
