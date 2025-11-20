@@ -8,8 +8,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "pretest:e2e": "dotenv -e .env.test drizzle-kit migrate",
-    "test:e2e": "dotenv -e .env.test vitest run"
+    "pretest": "dotenv -e .env.test drizzle-kit migrate",
+    "test": "dotenv -e .env.test vitest run"
   },
   "dependencies": {
     "@fastify/cors": "^11.1.0",
