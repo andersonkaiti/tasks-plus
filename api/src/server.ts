@@ -32,6 +32,15 @@ app.register(fastifySwagger, {
       description: 'API documentation for the Tasks Plus application',
       version: '1.0.0',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
 })
 
