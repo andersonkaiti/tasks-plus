@@ -42,10 +42,9 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'pnpm'
-          cache-dependency-path: ./api/pnpm-lock.yaml
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: 'Install Deps'
-        working-directory: ./api
         run: pnpm install --frozen-lockfile
 
       - name: 'Setup Database Schema (Drizzle)'
@@ -54,12 +53,4 @@ jobs:
 
       - name: 'Test'
         working-directory: ./api
-        run: pnpm exec vitest run --coverage.enabled true --coverage.reporter=json-summary --coverage.reporter=text --passWithNoTests
-
-      - name: 'Report Coverage'
-        if: always() 
-        uses: davelosert/vitest-coverage-report-action@v2
-        with:
-          working-directory: ./api
-          json-summary-path: ./api/coverage/coverage-summary.json
-          json-final-path: ./api/coverage/coverage-final.json
+        run: pnpm exec vitest run --coverage.enabled true --passWithNoTests
