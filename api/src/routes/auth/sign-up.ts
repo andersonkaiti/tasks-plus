@@ -38,6 +38,9 @@ export const signUp: FastifyPluginAsyncZod = async (app) => {
               updatedAt: z.date(),
             }),
           }),
+          400: z.object({
+            message: z.string(),
+          }),
           409: z.object({
             message: z.string(),
           }),
@@ -55,7 +58,7 @@ export const signUp: FastifyPluginAsyncZod = async (app) => {
         .from(usersTable)
         .where(eq(usersTable.email, email))
 
-      if (!userWithSameEmail) {
+      if (userWithSameEmail.length) {
         throw new ConflictError('Invalid credentials')
       }
 
