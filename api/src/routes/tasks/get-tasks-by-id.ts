@@ -7,12 +7,15 @@ import { authMiddleware } from '../../middlewares/auth'
 import { NotFoundError } from '../_errors/not-found'
 
 export const getTaskById: FastifyPluginAsyncZod = async (app) => {
-  app.register(authMiddleware).get(
+  await app.register(authMiddleware)
+
+  app.get(
     '/tasks/:id',
     {
       schema: {
         summary: 'Get task by id',
         tags: ['Tasks'],
+        security: [{ bearerAuth: [] }],
         params: z.object({
           id: z.uuid(),
         }),

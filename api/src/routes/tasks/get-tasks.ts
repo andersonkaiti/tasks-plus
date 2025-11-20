@@ -5,12 +5,15 @@ import { tasksTable } from '../../database/schemas'
 import { authMiddleware } from '../../middlewares/auth'
 
 export const getTasks: FastifyPluginAsyncZod = async (app) => {
-  app.register(authMiddleware).get(
+  await app.register(authMiddleware)
+
+  app.get(
     '/tasks',
     {
       schema: {
         summary: 'Get all tasks',
         tags: ['Tasks'],
+        security: [{ bearerAuth: [] }],
         querystring: z.object({
           page: z.coerce.number().min(1).default(1),
           limit: z.coerce.number().min(1).default(10),

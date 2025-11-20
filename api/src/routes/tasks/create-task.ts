@@ -5,7 +5,9 @@ import { tasksTable } from '../../database/schemas'
 import { authMiddleware } from '../../middlewares/auth'
 
 export const createTask: FastifyPluginAsyncZod = async (app) => {
-  app.register(authMiddleware).post(
+  await app.register(authMiddleware)
+
+  app.post(
     '/tasks',
     {
       schema: {

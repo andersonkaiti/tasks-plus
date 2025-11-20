@@ -7,7 +7,9 @@ import { authMiddleware } from '../../middlewares/auth'
 import { NotFoundError } from '../_errors/not-found'
 
 export const updateTask: FastifyPluginAsyncZod = async (app) => {
-  app.register(authMiddleware).put(
+  await app.register(authMiddleware)
+
+  app.put(
     '/tasks/:id',
     {
       schema: {
