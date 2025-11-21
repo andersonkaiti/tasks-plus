@@ -23,6 +23,22 @@ Cypress.Commands.add('login', () => {
   cy.contains('Entrar').click()
 })
 
+Cypress.Commands.add('create_task', () => {
+  cy.login()
+
+  cy.contains('Tarefas').click()
+
+  cy.contains('Cadastrar tarefa').click()
+
+  cy.get('input[name="title"]').type(faker.word.words(5))
+  cy.get('textarea[name="description"]').type(faker.lorem.sentence())
+  cy.contains('Selecionar data').click()
+  cy.get('button[data-day]').not('[disabled]').first().click()
+  cy.get('input[id="time-picker"]').click().type('23:59')
+
+  cy.contains('Criar tarefa').click()
+})
+
 declare global {
   namespace Cypress {
     interface Chainable {
