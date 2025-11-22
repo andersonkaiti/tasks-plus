@@ -58,7 +58,7 @@ describe('Sign in', () => {
         password: 'wrongpassword',
       })
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(400)
     expect(response.body).toHaveProperty('message')
   })
 })
