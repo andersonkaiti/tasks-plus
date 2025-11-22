@@ -14,5 +14,12 @@ export const api = ky.create({
         }
       },
     ],
+    afterResponse: [
+      async (_request, _options, response) => {
+        if (response.status === 401 && response.statusText === 'Unauthorized') {
+          Cookies.remove('token')
+        }
+      },
+    ],
   },
 })
