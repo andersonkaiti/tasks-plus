@@ -4,7 +4,7 @@ import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { db } from '../../database'
 import { usersTable } from '../../database/schemas'
-import { UnauthorizedError } from '../_errors/unauthorized-error'
+import { BadRequestError } from '../_errors/badrequest-error'
 
 export const signIn: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -42,13 +42,13 @@ export const signIn: FastifyPluginAsyncZod = async (app) => {
         .where(eq(usersTable.email, email))
 
       if (!userFromEmail) {
-        throw new UnauthorizedError('Invalid credentials')
+        throw new BadRequestError('Invalid credentials')
       }
 
       const isPasswordValid = await compare(password, userFromEmail.password)
 
       if (!isPasswordValid) {
-        throw new UnauthorizedError('Invalid credentials')
+        throw new BadRequestError('Invalid credentials')
       }
 
       const token = await reply.jwtSign(

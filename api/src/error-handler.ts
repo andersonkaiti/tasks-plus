@@ -1,6 +1,7 @@
 import { DrizzleQueryError } from 'drizzle-orm'
 import type { FastifyInstance } from 'fastify'
 import z, { ZodError } from 'zod'
+import { BadRequestError } from './routes/_errors/badrequest-error'
 import { ConflictError } from './routes/_errors/conflict-error'
 import { NotFoundError } from './routes/_errors/not-found'
 import { UnauthorizedError } from './routes/_errors/unauthorized-error'
@@ -34,6 +35,12 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
 
   if (error instanceof DrizzleQueryError) {
     return reply.status(500).send({
+      message: error.message,
+    })
+  }
+
+  if (error instanceof BadRequestError) {
+    return reply.status(400).send({
       message: error.message,
     })
   }
