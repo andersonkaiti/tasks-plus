@@ -7,7 +7,7 @@
 [![Fastify](https://img.shields.io/badge/Fastify-5.6.2-202020?style=flat&logo=fastify&logoColor=white)](https://fastify.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-8.16.3-316192?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Vitest](https://img.shields.io/badge/Vitest-4.0.10-6E9F18?style=flat&logo=vitest&logoColor=white)](https://vitest.dev/)
-[![Cypress](https://img.shields.io/badge/Cypress-13.6.6-17202C?style=flat&logo=cypress&logoColor=white)](https://www.cypress.io/)
+[![Cypress](https://img.shields.io/badge/Cypress-15.7.0-17202C?style=flat&logo=cypress&logoColor=white)](https://www.cypress.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.2.2-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4.1.17-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
@@ -51,6 +51,7 @@ Este documento detalha as fases obrigatórias do processo de Garantia de Qualida
 | Categoria | Tecnologia | Versão | Descrição |
 |-----------|-----------|--------|-----------|
 | **Framework de Testes** | Vitest | ^4.0.10 | Framework de testes rápido e moderno |
+| **Framework de Testes** | Cypress | ^15.7.0 | Framework de testes E2E |
 | **Coverage** | Vitest Coverage | ^4.0.12 | Ferramenta de cobertura de código |
 | **Linter/Formatter** | Biome | 2.3.6 | Linter e formatter rápido |
 | **Faker** | Faker.js | ^10.1.0 | Geração de dados de teste |
@@ -190,28 +191,19 @@ sequenceDiagram
 
 ### 🎯 O que o sistema deve fazer?
 
-- ✅ Gerenciar usuários e tarefas
-- ✅ Permitir login/logout seguro
-- ✅ Operações CRUD (Criar, Ler, Atualizar, Deletar) para tarefas
-- ✅ Interface moderna e responsiva
-- ✅ API RESTful documentada
+- [x] Gerenciar usuários e tarefas
+- [x] Permitir login/logout seguro
+- [x] Operações CRUD (Criar, Ler, Atualizar, Deletar) para tarefas
+- [x] Interface moderna e responsiva
+- [x] API RESTful documentada
 
 ### 📝 Requisitos com critérios claros
 
-#### **R1: Login válido**
-- **Dado** que o usuário está na página de login  
-- **Quando** informar email e senha válidos  
-- **Então** deve acessar o painel principal
-
-#### **R2: Login inválido**
-- **Dado** que o usuário está na página de login  
-- **Quando** informar dados incorretos  
-- **Então** deve ver mensagem de erro
-
-#### **R3: Criar tarefa**
-- **Dado** que o usuário está logado  
-- **Quando** preencher os dados obrigatórios e salvar  
-- **Então** a tarefa será criada e listada
+| ID | Requisito | Dado | Quando | Então |
+|----|-----------|------|--------|-------|
+| **R1** | Login válido | que o usuário está na página de login | informar email e senha válidos | deve acessar o painel principal |
+| **R2** | Login inválido | que o usuário está na página de login | informar dados incorretos | deve ver mensagem de erro |
+| **R3** | Criar tarefa | que o usuário está logado | preencher os dados obrigatórios e salvar | a tarefa será criada e listada |
 
 ### 🔄 Fluxos Principais e Riscos
 
@@ -456,7 +448,7 @@ O projeto utiliza **GitHub Actions** para automação de testes e validação de
 | Métrica | Resultado |
 |---------|-----------|
 | **Cobertura de Requisitos** | ✅ 100% (6/6 requisitos) |
-| **Taxa de Aprovação** | ✅ 100% (20/20 casos executados) |
+| **Taxa de Aprovação** | ✅ 100% (26/26 casos executados) |
 | **Cobertura de Código** | ✅ 85%+ |
 | **Defeitos Encontrados** | 1 (severidade baixa) |
 | **Tempo de Correção** | ~1 hora |
@@ -483,7 +475,7 @@ Todos os requisitos funcionais foram testados e validados:
 |-------|------------------|-----------------|------|
 | Ciclo 1 (Inicial) | 10 | 10 | 100% |
 | Ciclo 2 (Regressão) | 10 | 10 | 100% |
-| **Total** | **20** | **20** | **100%** |
+| **Total** | **26** | **26** | **100%** |
 
 #### Métricas de Qualidade de Código
 
@@ -508,7 +500,7 @@ Todos os requisitos funcionais foram testados e validados:
 #### Resumo
 
 - **Total de Defeitos:** 1
-- **Densidade:** 0,05 defeitos/caso de teste (1 defeito / 20 casos)
+- **Densidade:** 0,03 defeitos/caso de teste (1 defeito / 26 casos)
 - **Severidade:** Baixa
 - **Status:** ✅ Todos corrigidos
 
@@ -528,8 +520,6 @@ Todos os requisitos funcionais foram testados e validados:
 | BUG-001 | Tratamento de erros no error handler do backend | Baixa | ~1h | ✅ Corrigido |
 
 > 💡 **Observação:** O defeito identificado foi corrigido durante o desenvolvimento e não impactou os casos de teste funcionais.
-
----
 
 ## 10. Guia de Nomenclatura
 
