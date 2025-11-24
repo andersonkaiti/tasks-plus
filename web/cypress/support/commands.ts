@@ -17,7 +17,7 @@ Cypress.Commands.add('login', () => {
 
   cy.contains('Criar conta').click()
 
-  cy.get('input[name="email"]').type(email)
+  cy.wait(500).get('input[name="email"]').type(email)
   cy.get('input[name="password"]').type(password)
 
   cy.contains('Entrar').click()

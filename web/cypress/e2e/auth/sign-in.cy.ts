@@ -18,7 +18,7 @@ describe('should be able to sign up', () => {
 
     cy.contains('Criar conta').click()
 
-    cy.get('input[name="email"]').type(email)
+    cy.wait(500).get('input[name="email"]').type(email)
     cy.get('input[name="password"]').type(password)
 
     cy.contains('Entrar').click()
