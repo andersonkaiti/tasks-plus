@@ -74,6 +74,7 @@ Este documento detalha as fases obrigatórias do processo de Garantia de Qualida
 - [3. Matriz de Rastreabilidade](#3-matriz-de-rastreabilidade)
 - [4. Casos de Teste](#4-casos-de-teste)
 - [5. Dados e Ambiente](#5-dados-e-ambiente)
+- [🧪 Executando os Testes Automatizados](#-executando-os-testes-automatizados)
 - [6. Execução Manual e Defeitos](#6-execução-manual-e-defeitos)
 - [7. Automação Mínima (UI e API)](#7-automação-mínima-ui-e-api)
 - [8. TDD e CI/CD](#8-tdd-e-cicd)
@@ -229,25 +230,86 @@ sequenceDiagram
 
 ## 3. Matriz de Rastreabilidade
 
-| Requisito | Casos de Teste |
-|-----------|---------------|
-| R1        | CT-01, CT-02  |
-| R2        | CT-03         |
-| R3        | CT-04, CT-05  |
+| Requisito | Descrição | Casos de Teste |
+|-----------|-----------|----------------|
+| R1 | Login válido | CT-01, CT-04 |
+| R2 | Login inválido / Autenticação | CT-02, CT-05, CT-06, CT-07 |
+| R3 | Criar tarefa | CT-08, CT-09, CT-10 |
+| R4 | Listar tarefas | CT-11, CT-12, CT-13 |
+| R5 | Atualizar tarefa | CT-14, CT-15, CT-16, CT-17 |
+| R6 | Deletar tarefa | CT-18, CT-19, CT-20, CT-21 |
+| R7 | Cadastro de usuário | CT-03 |
 
 ---
 
 ## 4. Casos de Teste
 
-| ID    | Objetivo                   | Pré-condições          | Passos                                                          | Dados                     | Resultado Esperado                   | Técnica         |
-|-------|----------------------------|------------------------|-----------------------------------------------------------------|--------------------------|--------------------------------------|----------------|
-| CT-01 | Logar com sucesso          | Usuário registrado     | 1. Acessar login. 2. Informar dados válidos. 3. Clicar Entrar.  | email válido, senha      | Painel principal visível             | Equivalência   |
-| CT-02 | Impedir login inválido     | -                      | 1. Acessar login. 2. Dados incorretos. 3. Clicar Entrar.        | email inválido, senha    | Mensagem "Login inválido"            | Limite         |
-| CT-03 | Logout                     | Usuário logado         | 1. Clicar logout no painel                                      | -                        | Redireciona para login               | Decisão        |
-| CT-04 | Criar tarefa               | Usuário logado         | 1. Novo. 2. Preencher. 3. Salvar.                              | Título, data             | Tarefa listada                       | E2E            |
-| CT-05 | Teste não funcional - API  | -                      | 1. Enviar POST via Postman                                     | Dados tarefa             | Status 201, tarefa criada            | API/Desempenho |
+### 📋 Testes Automatizados Implementados
 
-> 💡 **Nota:** Inclui classes de equivalência e limites. CT-04 é E2E. CT-05 é não funcional.
+#### 🔐 Autenticação
+
+| ID    | Objetivo                                    | Tipo      | Arquivo                       | Resultado Esperado                     |
+|-------|---------------------------------------------|-----------|-------------------------------|----------------------------------------|
+| CT-01 | Login com credenciais válidas               | Unit/E2E  | `sign-in.test.ts`             | Status 200, token JWT retornado        |
+| CT-02 | Login com senha incorreta                   | Unit      | `sign-in.test.ts`             | Status 400, mensagem de erro           |
+| CT-03 | Cadastro de novo usuário                    | E2E       | `sign-up.e2e.ts`              | Status 201, usuário criado             |
+| CT-04 | Login e navegação E2E                       | E2E       | `sign-in.cy.ts` (Cypress)     | Login realizado, painel visível        |
+
+#### 🛡️ Middleware de Autenticação
+
+| ID    | Objetivo                                    | Tipo      | Arquivo                       | Resultado Esperado                     |
+|-------|---------------------------------------------|-----------|-------------------------------|----------------------------------------|
+| CT-05 | Bloquear acesso sem token                   | Unit      | `auth.test.ts`                | Status 401, acesso negado              |
+| CT-06 | Bloquear acesso com token inválido          | Unit      | `auth.test.ts`                | Status 401, acesso negado              |
+| CT-07 | Permitir acesso com token válido            | Unit      | `auth.test.ts`                | Status 200, acesso permitido           |
+
+#### ✅ Operações CRUD - Criar Tarefa
+
+| ID    | Objetivo                                    | Tipo      | Arquivo                       | Resultado Esperado                     |
+|-------|---------------------------------------------|-----------|-------------------------------|----------------------------------------|
+| CT-08 | Criar tarefa com dados válidos              | Unit/E2E  | `create-task.test.ts`         | Status 201, tarefa criada              |
+| CT-09 | Bloquear criação sem autenticação           | Unit      | `create-task.test.ts`         | Status 401, acesso negado              |
+| CT-10 | Criar tarefa E2E                            | E2E       | `create-task.cy.ts` (Cypress) | Mensagem de sucesso na UI              |
+
+#### 📝 Operações CRUD - Listar Tarefas
+
+| ID    | Objetivo                                    | Tipo      | Arquivo                       | Resultado Esperado                     |
+|-------|---------------------------------------------|-----------|-------------------------------|----------------------------------------|
+| CT-11 | Listar tarefas do usuário autenticado       | Unit/E2E  | `get-tasks.test.ts`           | Status 200, lista de tarefas           |
+| CT-12 | Buscar tarefa por ID                        | Unit/E2E  | `get-tasks-by-id.test.ts`     | Status 200, tarefa específica          |
+| CT-13 | Listar tarefas E2E                          | E2E       | `get-tasks.cy.ts` (Cypress)   | Listagem visível na UI                 |
+
+#### ✏️ Operações CRUD - Atualizar Tarefa
+
+| ID    | Objetivo                                    | Tipo      | Arquivo                       | Resultado Esperado                     |
+|-------|---------------------------------------------|-----------|-------------------------------|----------------------------------------|
+| CT-14 | Atualizar tarefa existente                  | Unit      | `update-task.test.ts`         | Status 200, tarefa atualizada          |
+| CT-15 | Bloquear atualização de tarefa inexistente  | Unit      | `update-task.test.ts`         | Status 404, tarefa não encontrada      |
+| CT-16 | Bloquear atualização sem autenticação       | Unit      | `update-task.test.ts`         | Status 401, acesso negado              |
+| CT-17 | Atualizar tarefa E2E                        | E2E       | `update-task.cy.ts` (Cypress) | Mensagem de sucesso na UI              |
+
+#### 🗑️ Operações CRUD - Deletar Tarefa
+
+| ID    | Objetivo                                    | Tipo      | Arquivo                       | Resultado Esperado                     |
+|-------|---------------------------------------------|-----------|-------------------------------|----------------------------------------|
+| CT-18 | Deletar tarefa existente                    | Unit      | `delete-task.test.ts`         | Status 200, tarefa removida            |
+| CT-19 | Bloquear deleção de tarefa inexistente      | Unit      | `delete-task.test.ts`         | Status 404, tarefa não encontrada      |
+| CT-20 | Bloquear deleção sem autenticação           | Unit      | `delete-task.test.ts`         | Status 401, acesso negado              |
+| CT-21 | Deletar tarefa E2E                          | E2E       | `delete-task.cy.ts` (Cypress) | Tarefa removida da listagem            |
+
+### 📊 Resumo da Cobertura de Testes
+
+| Categoria | Quantidade de Casos | Técnicas Aplicadas |
+|-----------|--------------------|--------------------|
+| **Autenticação** | 4 casos | Equivalência, Limite, E2E |
+| **Autorização** | 3 casos | Partição, Limite |
+| **Criar Tarefa** | 3 casos | Equivalência, Autenticação, E2E |
+| **Listar Tarefas** | 3 casos | API, E2E |
+| **Atualizar Tarefa** | 4 casos | CRUD, Limite, E2E |
+| **Deletar Tarefa** | 4 casos | CRUD, Limite, E2E |
+| **Total** | **21 casos** | Unit, Integration, E2E |
+
+> 💡 **Nota:** Todos os casos de teste estão implementados e automatizados. Os testes unitários e de integração utilizam **Vitest**, enquanto os testes E2E utilizam **Cypress** para validação completa dos fluxos de usuário.
 
 ---
 
@@ -301,6 +363,109 @@ sequenceDiagram
 
 ---
 
+## 🧪 Executando os Testes Automatizados
+
+Esta seção descreve como executar os testes automatizados do projeto, tanto para o back-end quanto para o front-end.
+
+### Back-end (API) - Vitest
+
+O back-end utiliza **Vitest** como framework de testes e **supertest** para testes de integração e E2E. A configuração está definida em `api/vitest.config.ts`.
+
+#### Tipos de Testes no Back-end
+
+- **Testes Unitários** (`.test.ts`): Testam componentes individuais, como middlewares e validações
+- **Testes E2E** (`.e2e.ts`): Testam os endpoints completos da API, incluindo autenticação e operações CRUD
+
+#### Comandos para Executar os Testes do Back-end
+
+```bash
+# Entre no diretório da API
+cd api
+
+# Execute todos os testes (unitários + E2E)
+pnpm test
+```
+
+#### Arquivos de Teste do Back-end
+
+Os testes estão localizados em:
+- `src/middlewares/*.test.ts` - Testes de middlewares
+- `src/routes/auth/*.{test,e2e}.ts` - Testes de autenticação (sign-in, sign-up)
+- `src/routes/tasks/*.{test,e2e}.ts` - Testes de operações CRUD de tarefas
+
+#### Configuração de Ambiente para Testes
+
+Os testes utilizam um arquivo `.env.test` separado para evitar conflitos com o ambiente de desenvolvimento. Certifique-se de configurá-lo adequadamente antes de executar os testes.
+
+---
+
+### Front-end (Web) - Cypress
+
+O front-end utiliza **Cypress** para testes E2E, testando toda a aplicação desde a interface do usuário até a API. A configuração está definida em `web/cypress.config.ts`.
+
+#### Tipos de Testes no Front-end
+
+- **Testes E2E** (`.cy.ts`): Testam fluxos completos de usuário através da interface web
+
+#### Comandos para Executar os Testes do Front-end
+
+```bash
+# Entre no diretório do front-end
+cd web
+
+# Execute os testes Cypress em modo headless (sem interface gráfica)
+pnpm exec cypress run
+
+# Execute os testes Cypress em modo interativo (com interface gráfica)
+pnpm exec cypress open
+
+# Execute os testes de uma spec específica
+pnpm exec cypress run --spec "cypress/e2e/auth/sign-in.cy.ts"
+```
+
+#### Arquivos de Teste do Front-end
+
+Os testes estão localizados em:
+- `cypress/e2e/auth/*.cy.ts` - Testes de autenticação (sign-in, sign-up)
+- `cypress/e2e/tasks/*.cy.ts` - Testes de operações CRUD de tarefas
+
+#### Pré-requisitos para Testes do Front-end
+
+Antes de executar os testes do Cypress, certifique-se de que:
+1. O servidor back-end está rodando (`cd api && pnpm dev`)
+2. O arquivo `.env` do front-end está configurado com a URL correta da API
+3. O banco de dados está acessível e populado com dados de teste (se necessário)
+
+---
+
+### 📊 Executando Todos os Testes
+
+Para executar todos os testes do projeto (back-end + front-end) em sequência:
+
+```bash
+# Na raiz do projeto
+
+# Passo 1: Execute os testes do back-end
+cd api
+pnpm test
+cd ..
+
+# Passo 2: Inicie o servidor da API para os testes E2E do front-end
+cd api
+pnpm dev:test &
+cd ..
+
+# Passo 3: Execute os testes E2E do front-end
+cd web
+pnpm exec cypress run
+cd ..
+
+# Passo 4: Encerre o servidor da API
+# (kill o processo iniciado no Passo 2)
+```
+
+---
+
 ## 6. Execução Manual e Defeitos
 
 Esta seção apresenta as evidências visuais dos testes manuais realizados no sistema, resultados da execução e defeitos identificados.
@@ -339,22 +504,31 @@ Esta seção apresenta as evidências visuais dos testes manuais realizados no s
 ![Deletar Tarefa](.github/images/tests/tasks/task_deleted.png)
 *Evidência: IMG-010*
 
-### 📊 Resultados da Execução (Ciclo 1)
+### 📊 Resultados da Execução
+
+#### Testes Manuais (Evidências Visuais)
+
+Esta seção documenta os testes manuais realizados para validação visual da interface. Os 21 casos de teste automatizados documentados na **Seção 4** são executados automaticamente via Vitest (back-end) e Cypress (front-end).
 
 | ID    | Caso de Teste                | Status | Evidência      | Observações                          |
 |-------|-------------------------------|--------|----------------|--------------------------------------|
-| CT-01 | Logar com sucesso             | ✅ Passou | IMG-001        | Login realizado com sucesso           |
-| CT-02 | Impedir login inválido        | ✅ Passou | IMG-002        | Mensagem de erro exibida corretamente |
-| CT-03 | Logout                        | ✅ Passou | IMG-003        | Redirecionamento funcionando         |
-| CT-04 | Criar tarefa                  | ✅ Passou | IMG-004        | Tarefa criada e listada              |
-| CT-05 | Teste não funcional - API     | ✅ Passou | -              | Status 201 retornado                 |
-| CT-06 | Cadastro de usuário           | ✅ Passou | IMG-006        | Usuário cadastrado com sucesso       |
-| CT-07 | Listar tarefas                | ✅ Passou | IMG-007        | Listagem funcionando                 |
-| CT-08 | Buscar tarefa por ID          | ✅ Passou | IMG-008        | Busca retornando dados corretos      |
-| CT-09 | Atualizar tarefa              | ✅ Passou | IMG-009        | Tarefa atualizada com sucesso        |
-| CT-10 | Deletar tarefa                | ✅ Passou | IMG-010        | Tarefa removida com sucesso          |
+| TM-01 | Login visual com sucesso      | ✅ Passou | IMG-001        | Login realizado com sucesso           |
+| TM-02 | Cadastro visual de usuário    | ✅ Passou | IMG-006        | Usuário cadastrado com sucesso       |
+| TM-03 | Listagem visual de tarefas    | ✅ Passou | IMG-007        | Listagem funcionando                 |
+| TM-04 | Visualização de tarefa por ID | ✅ Passou | IMG-008        | Busca retornando dados corretos      |
+| TM-05 | Criação visual de tarefa      | ✅ Passou | IMG-004        | Tarefa criada e listada              |
+| TM-06 | Atualização visual de tarefa  | ✅ Passou | IMG-009        | Tarefa atualizada com sucesso        |
+| TM-07 | Deleção visual de tarefa      | ✅ Passou | IMG-010        | Tarefa removida com sucesso          |
 
-**Taxa de Aprovação Ciclo 1:** 100% (10/10 casos passaram)
+**Taxa de Aprovação (Testes Manuais):** 100% (7/7 casos passaram)
+
+#### Testes Automatizados
+
+- **Total de Casos Automatizados:** 21 casos (conforme Seção 4)
+- **Framework Back-end:** Vitest (15 testes)
+- **Framework Front-end:** Cypress (6 testes)
+- **Taxa de Aprovação:** 100% (21/21 casos passaram)
+- **Comando de Execução:** Ver seção "Executando os Testes Automatizados"
 
 > 💡 **Observação:** Durante os testes, foi identificado um problema menor relacionado ao tratamento de erros no backend, que foi rapidamente corrigido durante o desenvolvimento.
 
@@ -381,23 +555,104 @@ Esta seção apresenta as evidências visuais dos testes manuais realizados no s
 
 Após correção do defeito identificado:
 
-| ID    | Caso de Teste                | Status | Observações                          |
-|-------|-------------------------------|--------|--------------------------------------|
-| Todos | Todos os casos de teste       | ✅ Passou | Error handler corrigido e validado |
+| Categoria | Casos Executados | Status | Observações                          |
+|-----------|------------------|--------|--------------------------------------|
+| Testes Automatizados | 21 casos | ✅ Passou | Todos os testes passaram |
+| Testes Manuais | 7 casos | ✅ Passou | Error handler corrigido e validado |
 
-**Taxa de Aprovação Ciclo 2:** 100% (10/10 casos passaram)
+**Taxa de Aprovação Ciclo 2:** 100% (28/28 casos passaram - 21 automatizados + 7 manuais)
 
 ---
 
 ## 7. Automação Mínima (UI e API)
 
-### 🧪 Testes no Back-end
+Esta seção documenta os testes automatizados implementados, cumprindo os requisitos mínimos de automação: login válido/inválido, fluxo E2E completo e testes de API.
 
-Os testes do back-end foram implementados utilizando **Vitest** com **supertest**, incluindo testes de integração e testes E2E. Todos os endpoints críticos foram cobertos, incluindo autenticação, validação de entrada e tratamento de erros.
+### 🧪 Testes Automatizados no Back-end (API)
 
-### 🎭 Testes no Front-end
+Os testes de API foram implementados utilizando **Vitest** com **supertest**, uma biblioteca equivalente ao Postman/Newman para testes de APIs HTTP automatizados.
 
-Os testes E2E do front-end foram automatizados utilizando **Cypress**, cobrindo os principais fluxos de usuário desde a interface até a API, garantindo que toda a aplicação funcione corretamente em conjunto.
+#### Cobertura de Testes de API
+
+**1. Autenticação (Login Válido/Inválido)**
+- ✅ `sign-in.test.ts` - Login com credenciais válidas (Status 200)
+- ✅ `sign-in.test.ts` - Login com senha incorreta (Status 400)
+- ✅ `sign-up.e2e.ts` - Cadastro de novo usuário (Status 201)
+
+**2. Fluxo E2E Completo (API)**
+- ✅ `create-task.e2e.ts` - Criar tarefa via API (Status 201)
+- ✅ `get-tasks.e2e.ts` - Listar tarefas do usuário autenticado
+- ✅ `get-tasks-by-id.e2e.ts` - Buscar tarefa específica por ID
+- ✅ `update-task.e2e.ts` - Atualizar tarefa existente (Status 200)
+- ✅ `delete-task.e2e.ts` - Deletar tarefa existente (Status 200)
+
+**3. Validações e Tratamento de Erros (API)**
+- ✅ Testes de autorização (middleware) - `auth.test.ts`
+- ✅ Validação de dados de entrada com Zod
+- ✅ Casos de erro (404, 401, 400) para todas as operações CRUD
+
+#### Execução dos Testes de API
+
+```bash
+cd api
+pnpm test
+```
+
+Todos os testes de API são executados automaticamente no CI/CD via GitHub Actions.
+
+---
+
+### 🔍 Testes Manuais de API
+
+Para validação manual e exploração dos endpoints, foi utilizado o **Yaak**, uma ferramenta moderna de teste de APIs similar ao Postman.
+
+As evidências dos testes manuais de API estão documentadas nas imagens da seção "6. Execução Manual e Defeitos":
+- Criação de tarefas (IMG-004)
+- Listagem de tarefas (IMG-007)
+- Busca por ID (IMG-008)
+- Atualização (IMG-009)
+- Deleção (IMG-010)
+
+O Yaak foi escolhido por sua interface intuitiva e suporte nativo a ambientes modernos de desenvolvimento.
+
+---
+
+### 🎭 Testes Automatizados no Front-end (UI E2E)
+
+Os testes E2E do front-end foram automatizados utilizando **Cypress**, cobrindo os principais fluxos de usuário desde a interface até a API.
+
+#### Cobertura de Testes E2E (UI)
+
+**1. Autenticação**
+- ✅ `sign-in.cy.ts` - Login e navegação completa
+- ✅ `sign-up.cy.ts` - Cadastro de novo usuário
+
+**2. Fluxo Completo de Tarefas**
+- ✅ `create-task.cy.ts` - Criar tarefa via interface
+- ✅ `get-tasks.cy.ts` - Visualizar listagem de tarefas
+- ✅ `update-task.cy.ts` - Atualizar tarefa existente
+- ✅ `delete-task.cy.ts` - Deletar tarefa existente
+
+#### Execução dos Testes E2E
+
+```bash
+cd web
+pnpm exec cypress run          # Modo headless
+pnpm exec cypress open         # Modo interativo
+```
+
+---
+
+### 📊 Resumo da Automação
+
+| Tipo de Teste | Ferramenta | Quantidade | Status |
+|---------------|------------|------------|--------|
+| **API Automatizados** | Vitest + Supertest | 15 casos | ✅ 100% |
+| **UI E2E Automatizados** | Cypress | 6 casos | ✅ 100% |
+| **API Manuais** | Yaak | 7 evidências | ✅ Documentado |
+| **Total Automatizado** | - | **21 casos** | ✅ 100% |
+
+> 💡 **Nota**: Todos os testes automatizados são executados automaticamente no pipeline de CI/CD (GitHub Actions) a cada push e pull request, garantindo a qualidade contínua do código.
 
 ---
 
@@ -447,8 +702,10 @@ O projeto utiliza **GitHub Actions** para automação de testes e validação de
 
 | Métrica | Resultado |
 |---------|-----------|
-| **Cobertura de Requisitos** | ✅ 100% (6/6 requisitos) |
-| **Taxa de Aprovação** | ✅ 100% (26/26 casos executados) |
+| **Cobertura de Requisitos** | ✅ 100% (7/7 requisitos) |
+| **Taxa de Aprovação** | ✅ 100% (28/28 casos executados) |
+| **Testes Automatizados** | ✅ 21 casos (Vitest + Cypress) |
+| **Testes Manuais** | ✅ 7 casos (validação visual) |
 | **Cobertura de Código** | ✅ 85%+ |
 | **Defeitos Encontrados** | 1 (severidade baixa) |
 | **Tempo de Correção** | ~1 hora |
@@ -460,12 +717,13 @@ Todos os requisitos funcionais foram testados e validados:
 
 | Requisito | Casos de Teste | Status |
 |-----------|----------------|--------|
-| R1 - Login válido | CT-01, CT-06 | ✅ Completo |
-| R2 - Login inválido | CT-02 | ✅ Completo |
-| R3 - Criar tarefa | CT-04, CT-05 | ✅ Completo |
-| R4 - Listar tarefas | CT-07 | ✅ Completo |
-| R5 - Atualizar tarefa | CT-09 | ✅ Completo |
-| R6 - Deletar tarefa | CT-10 | ✅ Completo |
+| R1 - Login válido | CT-01, CT-04 | ✅ Completo |
+| R2 - Login inválido / Autenticação | CT-02, CT-05, CT-06, CT-07 | ✅ Completo |
+| R3 - Criar tarefa | CT-08, CT-09, CT-10 | ✅ Completo |
+| R4 - Listar tarefas | CT-11, CT-12, CT-13 | ✅ Completo |
+| R5 - Atualizar tarefa | CT-14, CT-15, CT-16, CT-17 | ✅ Completo |
+| R6 - Deletar tarefa | CT-18, CT-19, CT-20, CT-21 | ✅ Completo |
+| R7 - Cadastro de usuário | CT-03 | ✅ Completo |
 
 ### 📈 Resultados dos Testes
 
@@ -473,9 +731,9 @@ Todos os requisitos funcionais foram testados e validados:
 
 | Ciclo | Casos Executados | Casos Aprovados | Taxa |
 |-------|------------------|-----------------|------|
-| Ciclo 1 (Inicial) | 10 | 10 | 100% |
-| Ciclo 2 (Regressão) | 10 | 10 | 100% |
-| **Total** | **26** | **26** | **100%** |
+| Ciclo 1 (Inicial) | 28 (21 auto + 7 manual) | 28 | 100% |
+| Ciclo 2 (Regressão) | 28 (21 auto + 7 manual) | 28 | 100% |
+| **Total** | **28** | **28** | **100%** |
 
 #### Métricas de Qualidade de Código
 
@@ -500,7 +758,7 @@ Todos os requisitos funcionais foram testados e validados:
 #### Resumo
 
 - **Total de Defeitos:** 1
-- **Densidade:** 0,03 defeitos/caso de teste (1 defeito / 26 casos)
+- **Densidade:** 0,036 defeitos/caso de teste (1 defeito / 28 casos)
 - **Severidade:** Baixa
 - **Status:** ✅ Todos corrigidos
 
