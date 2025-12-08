@@ -1,3 +1,4 @@
+import { desc } from 'drizzle-orm'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { db } from '../../database'
@@ -52,6 +53,7 @@ export const getTasks: FastifyPluginAsyncZod = async (app) => {
         .from(tasksTable)
         .offset(offset)
         .limit(limit)
+        .orderBy(desc(tasksTable.createdAt))
 
       const totalNumberOfTasks = await db.$count(tasksTable)
 
