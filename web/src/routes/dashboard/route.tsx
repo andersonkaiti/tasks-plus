@@ -1,5 +1,4 @@
 import { DashboardSidebar } from '@components/dashboard/sidebar'
-import { AnimatedThemeToggler } from '@components/ui/animated-theme-toggler'
 import {
   SidebarInset,
   SidebarProvider,
@@ -32,10 +31,6 @@ function RouteComponent() {
 
           <Outlet />
         </SidebarInset>
-
-        <div className="fixed top-3 right-3">
-          <AnimatedThemeToggler className="size-4 cursor-pointer" />
-        </div>
       </SidebarProvider>
     </>
   )
